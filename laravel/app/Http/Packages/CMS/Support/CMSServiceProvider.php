@@ -10,7 +10,6 @@ namespace App\Http\Packages\CMS\Support;
 
 use App;
 use App\Http\Packages\CMS\Gateways\CMSGateway;
-use App\Http\Packages\CMS\Gateways\CMSRecordGateway;
 use App\Http\Packages\CMS\Gateways\CMSRecordSearchGateway;
 use App\Providers\GlobalServiceProvider;
 use Illuminate\Support\ServiceProvider;
@@ -28,7 +27,6 @@ class CMSServiceProvider extends ServiceProvider
     {
         return array(
             CMSGateway::class,
-            CMSRecordGateway::class,
             CMSRecordSearchGateway::class,
         );
     }
@@ -57,14 +55,6 @@ class CMSServiceProvider extends ServiceProvider
     public static function getCMSGateway()
     {
         return App::make(CMSGateway::class);
-    }
-
-    /**
-     * @return CMSRecordGateway
-     */
-    public static function getCMSRecordGateway()
-    {
-        return App::make(CMSRecordGateway::class);
     }
 
     /**

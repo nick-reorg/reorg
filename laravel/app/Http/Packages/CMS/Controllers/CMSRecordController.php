@@ -14,10 +14,11 @@ use App\Http\Packages\CMS\Gateways\CMSRecordSearchGateway;
 use App\Http\Packages\CMS\Models\CMSRecordXLSBuilder;
 use App\Jobs\SaveCMSData;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Log;
 
 /**
  * Class CMSRecordController
@@ -93,19 +94,51 @@ class CMSRecordController extends Controller
      */
     public function get()
     {
-        $keyword = $this->request->get('keyword');
-        $result = $this->searchGateway->search($keyword);
+        $result = array();
+        try {
+            $keyword = $this->request->get('keyword');
+            $result = $this->searchGateway->search($keyword);
+        //Probably ElasticSearch but their exception types are vague.
+        } catch (Exception $e) {
+            $result['messages'][] = 'Unknown server-side error.';
+            $this->status = Controller::RESPONSE_SERVER_ERROR;
+            $context = array(
+                'keyword'   => $this->request->get('keyword', null),
+                'exception' => (string)$e,
+            );
+            Log::error('[CMSRecordController] Unknown exception during search: ' . $e->getMessage(), $context);
+        }
         return new Response($result, $this->status);
     }
 
     /**
      * GET api/cms/file
+     *
+     * @return Response
      */
     public function getFile()
     {
-        $keyword = $this->request->get('keyword');
-        $records = $this->searchGateway->search($keyword);
-        $file = CMSRecordXLSBuilder::buildXLS($records);
-        return response()->download($file->getPath(), $file->getName())->deleteFileAfterSend(true);
+        try {
+            $keyword = $this->request->get('keyword');
+            $records = $this->searchGateway->search($keyword);
+            $file = CMSRecordXLSBuilder::buildXLS($records);
+
+            return response()->download($file->getPath(), $file->getName())->deleteFileAfterSend(true);
+        } catch (\PHPExcel_Reader_Exception $e) {
+            $context = array(
+                'keyword'   => $this->request->get('keyword', null),
+                'exception' => (string)$e,
+            );
+            Log::error('[CMSRecordController] Exception building XLS: ' . $e->getMessage(), $context);
+        } catch (Exception $e) {
+            $result['messages'][] = 'Unknown server-side error.';
+            $this->status = Controller::RESPONSE_SERVER_ERROR;
+            $context = array(
+                'keyword'   => $this->request->get('keyword', null),
+                'exception' => (string)$e,
+            );
+            Log::error('[CMSRecordController] Unknown exception during search: ' . $e->getMessage(), $context);
+        }
+        return new Response(array('messages' => 'Error creating XLS'), $this->status);
     }
 }

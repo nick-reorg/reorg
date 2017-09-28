@@ -12,13 +12,6 @@ use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 
 /**
- * Not a ton of point to this class yet, but from my experience these types of applications expand greatly over time
- * and it becomes extremely useful to be able to access the result in all sorts of more dynamic ways and potentially to
- * do things like re-sort the results or do additional filtering. Having a response object gives us a good way to do a
- * lot of those things. I also want to convert the response array to objects anyway and this is a great spot to do it.
- *
- * I also like making a JsonSerializable object instead of building responses in the controller.
- *
  * Class CMSRecordSearchResult
  * @package App\Http\Packages\CMS\Models
  */

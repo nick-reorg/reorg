@@ -47,7 +47,9 @@ class CMSRecordSearchGateway extends AbstractElasticSearchBulkGateway
         return config('cms.bulk_size');
     }
 
-
+    /**
+     * @return int
+     */
     protected function getSize()
     {
         return config('cms.size');
@@ -60,6 +62,7 @@ class CMSRecordSearchGateway extends AbstractElasticSearchBulkGateway
     public function search($keyword)
     {
         $params = $this->makeBaseQuery();
+        $params['size'] = $this->getSize();
         $params['body']['query']['multi_match']['query'] = $keyword;
         //Lets the query mismatch by one or two characters which is pretty cool! Doesn't activate on short queries.
         $params['body']['query']['multi_match']['fuzziness'] = 'AUTO';

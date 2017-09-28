@@ -8,7 +8,8 @@
 
 namespace App\Http\Packages\ElasticSearch\Gateways;
 
-use App\Http\Packages\ElasticSearch\Contracts\BulkableDocumentInterface;
+use App;
+use App\Http\Packages\ElasticSearch\Contracts\IndexableDocumentInterface;
 
 /**
  * Class AbstractElasticSearchBulkGateway
@@ -41,7 +42,7 @@ abstract class AbstractElasticSearchBulkGateway extends AbstractElasticSearchGat
     }
 
     /**
-     * @param BulkableDocumentInterface[] $documents
+     * @param IndexableDocumentInterface[] $documents
      * @return array
      */
     public function bulkIndex(array $documents)
@@ -57,9 +58,6 @@ abstract class AbstractElasticSearchBulkGateway extends AbstractElasticSearchGat
              */
             $this->bulkDocs['body'][] = $command;
             $this->bulkDocs['body'][] = $document->toArray();
-            \Log::critical(print_r($command, true));
-            \Log::critical(print_r($document->toArray(), true));
-
 
             $response[] = $this->executeBulkIndex();
         }

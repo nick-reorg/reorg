@@ -9,6 +9,7 @@
 namespace App\Http\Packages\ElasticSearch\Gateways;
 
 use App;
+use App\Http\Packages\ElasticSearch\Contracts\IndexableDocumentInterface;
 use App\Http\Packages\Utils\SearchClients\SearchClientInterface;
 
 /**
@@ -59,7 +60,6 @@ abstract class AbstractElasticSearchGateway
         $params =  array(
             'index' => $this->getIndex(),
             'type' => $this->getType(),
-            'size' => $this->getSize(),
         );
         return $params;
     }
@@ -85,6 +85,21 @@ abstract class AbstractElasticSearchGateway
     protected function getSize()
     {
         return self::DEFAULT_SIZE;
+    }
+
+    /**
+     * @param IndexableDocumentInterface $document
+     * @return array
+     */
+    public function index(IndexableDocumentInterface $document)
+    {
+        $params = $this->makeBaseQuery();
+        $params['id'] = $document->getId();
+        $params['body'] = $document->makeBody();
+        if (App::environment() == 'testing') {
+            $params['refresh'] = true;
+        }
+        return $this->searchClient->index($params);
     }
 
 }

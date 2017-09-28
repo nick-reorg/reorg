@@ -9,12 +9,13 @@
 namespace App\Http\Packages\ElasticSearch\Contracts;
 
 /**
- * Implementing this Interface allows for bulk Indexing of documents in ElasticSearch.
+ * Implementing this Interface allows for bulk indexing of documents in ElasticSearch as well as indexing with the
+ * abstract gateways if no custom logic is needed.
  *
  * Interface DeterministicIdentifierInterface
- * @package app\Http\Packages\ElasticSearch\Contracts
+ * @package App\Http\Packages\ElasticSearch\Contracts
  */
-interface BulkableDocumentInterface
+interface IndexableDocumentInterface
 {
     /**
      * @return string

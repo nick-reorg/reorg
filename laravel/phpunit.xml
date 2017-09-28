@@ -16,6 +16,11 @@
         <testsuite name="Unit">
             <directory suffix="Test.php">./tests/Unit</directory>
         </testsuite>
+        <testsuite name="CMS">
+            <!-- <file>app/Http/Packages/CMS/Tests/CMSRecordControllerTest.php</file> -->
+            <file>app/Http/Packages/CMS/Tests/CMSRecordSearchGatewayTest.php</file>
+            <file>app/Http/Packages/CMS/Tests/CMSGatewayTest.php</file>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">

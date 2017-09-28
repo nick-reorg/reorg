@@ -10,6 +10,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
 /**
+ * This class us meant to be super light and only call high level functions of other classes.
+ *
  * Class SaveCMSData
  * @package App\Jobs
  */

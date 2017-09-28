@@ -8,7 +8,7 @@
 
 namespace App\Http\Packages\CMS\Models;
 
-use App\Http\Packages\ElasticSearch\Contracts\BulkableDocumentInterface;
+use App\Http\Packages\ElasticSearch\Contracts\IndexableDocumentInterface;
 use App\Http\Packages\ElasticSearch\Contracts\ScorableInterface;
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
@@ -17,7 +17,7 @@ use JsonSerializable;
  * Class CMSRecord
  * @package App\Http\Packages\CMS\Models
  */
-class CMSRecord implements Arrayable, JsonSerializable, BulkableDocumentInterface, ScorableInterface
+class CMSRecord implements Arrayable, JsonSerializable, IndexableDocumentInterface, ScorableInterface
 {
     /**
      * @var string
@@ -1057,6 +1057,7 @@ class CMSRecord implements Arrayable, JsonSerializable, BulkableDocumentInterfac
             'recipient_zip_code'                                               => $this->recipient_zip_code,
             'record_id'                                                        => $this->record_id,
             'related_product_indicator'                                        => $this->related_product_indicator,
+            'score'                                                            => $this->score,
             'submitting_applicable_manufacturer_or_applicable_gpo_name'        => $this->submitting_applicable_manufacturer_or_applicable_gpo_name,
             'third_party_payment_recipient_indicator'                          => $this->third_party_payment_recipient_indicator,
             'total_amount_of_payment_usdollars'                                => $this->total_amount_of_payment_usdollars,
@@ -1080,7 +1081,6 @@ class CMSRecord implements Arrayable, JsonSerializable, BulkableDocumentInterfac
             'covered_or_noncovered_indicator_1',
             'covered_or_noncovered_indicator_2',
             'covered_recipient_type',
-            //'date_of_payment',
             'delay_in_publication_indicator',
             'dispute_status_for_publication',
             'form_of_payment_or_transfer_of_value',
@@ -1090,7 +1090,6 @@ class CMSRecord implements Arrayable, JsonSerializable, BulkableDocumentInterfac
             'name_of_drug_or_biological_or_device_or_medical_supply_2',
             'nature_of_payment_or_transfer_of_value',
             'number_of_payments_included_in_total_amount',
-            //'payment_publication_date',
             'physician_first_name',
             'physician_last_name',
             'physician_license_state_code1',
@@ -1106,8 +1105,6 @@ class CMSRecord implements Arrayable, JsonSerializable, BulkableDocumentInterfac
             'recipient_country',
             'recipient_primary_business_street_address_line1',
             'recipient_state',
-            'recipient_zip_code',
-            'record_id',
             'related_product_indicator',
             'submitting_applicable_manufacturer_or_applicable_gpo_name',
             'third_party_payment_recipient_indicator',
