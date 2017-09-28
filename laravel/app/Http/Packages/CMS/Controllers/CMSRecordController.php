@@ -38,6 +38,14 @@ class CMSRecordController extends Controller
      */
     private $searchGateway;
 
+    private $postRules = array(
+        'start' => 'required'
+    );
+
+    private $searchRules = array(
+        'keyword' => 'required'
+    );
+
     /**
      * @var int
      */
@@ -63,6 +71,7 @@ class CMSRecordController extends Controller
     {
         $dates = array();
         $response = array();
+        $this->request->validate($this->postRules);
         $start = new Carbon($this->request->get('start'));
         $end = $this->request->get('end', null);
 
@@ -95,6 +104,7 @@ class CMSRecordController extends Controller
     public function get()
     {
         $result = array();
+        $this->request->validate($this->searchRules);
         try {
             $keyword = $this->request->get('keyword');
             $result = $this->searchGateway->search($keyword);
@@ -118,6 +128,7 @@ class CMSRecordController extends Controller
      */
     public function getFile()
     {
+        $this->request->validate($this->searchRules);
         try {
             $keyword = $this->request->get('keyword');
             $records = $this->searchGateway->search($keyword);
